@@ -36,6 +36,7 @@ public class CaptchaResource {
         String captcha = randomStringService.get(4);
         request.getSession().setAttribute("captcha", captcha);
         return Response.ok()
+                .header("Access-Control-Allow-Origin", "*")
                 .header("captcha", captcha)
                 .header("captcha256", bytesToHex(captcha))
                 .entity((StreamingOutput) output -> {
