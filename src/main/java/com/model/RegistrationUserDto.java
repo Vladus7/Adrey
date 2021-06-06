@@ -2,11 +2,9 @@ package com.model;
 
 import com.service.RoleService;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Component
 public class RegistrationUserDto {
     private String login;
     private String password;

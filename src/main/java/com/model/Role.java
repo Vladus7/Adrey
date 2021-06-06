@@ -1,5 +1,7 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class Role {
     @Id
     private Long id;
     private String name;
+    @JsonManagedReference
     @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
     private List<User> users = new ArrayList<>();
 
