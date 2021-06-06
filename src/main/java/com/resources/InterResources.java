@@ -42,9 +42,9 @@ public class InterResources {
     public Response login(LoginUserDto userDto) throws URISyntaxException {
         Map<String,String> errors = loginValidator.validate(userDto);
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errors).build();
+            return Response.status(Response.Status.UNAUTHORIZED).header("Access-Control-Allow-Origin", "*").entity(errors).build();
         }
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @POST
@@ -54,8 +54,8 @@ public class InterResources {
     public Response registration(RegistrationUserDto registrationUserDto, @Context HttpServletRequest request) {
         Map<String, String> errors = userRegistrationValidator.validate(registrationUserDto);
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errors).build();
+            return Response.status(Response.Status.UNAUTHORIZED).header("Access-Control-Allow-Origin", "*").entity(errors).build();
         }
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }
