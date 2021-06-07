@@ -1,5 +1,9 @@
 package com.model;
 
+import javax.ws.rs.core.GenericType;
+import java.util.List;
+import java.util.Objects;
+
 public class UserRowDto {
     private Long id;
     private String login;
@@ -66,5 +70,30 @@ public class UserRowDto {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRowDto{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRowDto that = (UserRowDto) o;
+        return age == that.age && id.equals(that.id) && login.equals(that.login) && firstName.equals(that.firstName) && lastName.equals(that.lastName) && role.equals(that.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, firstName, lastName, age, role);
     }
 }
