@@ -22,7 +22,6 @@ public class UserEditValidator implements Validator {
     @Override
     public Map<String, String> validate(Object object) {
         Map<String, String> errors = new HashMap<>();
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         EditUserDto user = (EditUserDto) object;
        // HttpSession session = attr.getRequest().getSession();
         if (!user.getPassword().isEmpty() && user.getPassword().length() < 3) {
