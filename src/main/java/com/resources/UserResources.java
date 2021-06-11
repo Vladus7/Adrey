@@ -38,7 +38,7 @@ public class UserResources {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
-        return Response.ok().header("Access-Control-Allow-Origin", "*")
+        return Response.ok()
                 .entity(convertorUsersToUserRowBeans.convert(userService.findAll()))
                 .build();
     }
@@ -48,7 +48,7 @@ public class UserResources {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") long userId) {
-        return Response.ok().header("Access-Control-Allow-Origin", "*")
+        return Response.ok()
                 .entity(new UserDto(userService.findById(userId))).build();
         //return new UserDto(userService.findById(userId));
     }
@@ -61,10 +61,10 @@ public class UserResources {
     public Response createUser(EditUserDto userDto) {
         Map<String,String> errors = userAddValidator.validate(userDto);
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.CONFLICT).header("Access-Control-Allow-Origin", "*").entity(errors).build();
+            return Response.status(Response.Status.CONFLICT).entity(errors).build();
         }
         userService.create(userDto.toUser(roleService));
-        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
+        return Response.ok().build();
     }
 
     // http://localhost:8080/users/update
@@ -75,10 +75,10 @@ public class UserResources {
     public Response updateUser(EditUserDto userDto) {
         Map<String,String> errors = userEditValidator.validate(userDto);
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.CONFLICT).header("Access-Control-Allow-Origin", "*").entity(errors).build();
+            return Response.status(Response.Status.CONFLICT).entity(errors).build();
         }
         userService.update(userDto.toUser(roleService));
-        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
+        return Response.ok().build();
     }
 
     // http://localhost:8080/users/1
@@ -88,9 +88,9 @@ public class UserResources {
         User user = userService.findById(id);
         if (Objects.isNull(user)) {
             return Response.status(Response.Status.CONFLICT)
-                    .header("Access-Control-Allow-Origin", "*").build();
+                    .build();
         }
         userService.remove(user);
-        return Response.ok(user).header("Access-Control-Allow-Origin", "*").build();
+        return Response.ok().build();
     }
 }

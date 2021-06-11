@@ -25,11 +25,10 @@ public class ConvertorUsersToUserRowBeans {
         return users;
     }
 
-    private static int getAge(Date birthday) {
-        return 1;
-//                Period.between(new Date(birthday.getTime()).toInstant()
-//                .atZone(ZoneId.systemDefault())
-//                .toLocalDate(), LocalDate.now()).getYears();
+    private int getAge(Date birthday) {
+        return Period.between(new Date(birthday.getTime()).toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate(), LocalDate.now()).getYears();
     }
 
 }

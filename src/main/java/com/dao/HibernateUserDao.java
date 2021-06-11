@@ -2,6 +2,8 @@ package com.dao;
 
 import com.exeption.TransactionException;
 import com.model.User;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Repository("userDao")
 public class HibernateUserDao implements UserDao {
+    private static final Logger LOGGER = Logger.getLogger(HibernateUserDao.class);
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -42,6 +45,7 @@ public class HibernateUserDao implements UserDao {
             transaction.commit();
         } catch (RuntimeException e) {
             transaction.rollback();
+            LOGGER.log(Level.ERROR, e);
             throw new TransactionException(e);
         }
     }
@@ -55,6 +59,7 @@ public class HibernateUserDao implements UserDao {
             transaction.commit();
         } catch (RuntimeException e) {
             transaction.rollback();
+            LOGGER.log(Level.ERROR, e);
             throw new TransactionException(e);
         }
     }
@@ -68,6 +73,7 @@ public class HibernateUserDao implements UserDao {
             transaction.commit();
         } catch (RuntimeException e) {
             transaction.rollback();
+            LOGGER.log(Level.ERROR, e);
             throw new TransactionException(e);
         }
     }

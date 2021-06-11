@@ -2,6 +2,8 @@ package com.dao;
 
 import com.exeption.TransactionException;
 import com.model.Role;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Repository("roleDao")
 public class HibernateRoleDao implements RoleDao {
+    private static final Logger LOGGER = Logger.getLogger(HibernateRoleDao.class);
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -52,6 +55,7 @@ public class HibernateRoleDao implements RoleDao {
             transaction.commit();
         } catch (RuntimeException e) {
             transaction.rollback();
+            LOGGER.log(Level.ERROR, e);
             throw new TransactionException(e);
         }
     }
@@ -65,6 +69,7 @@ public class HibernateRoleDao implements RoleDao {
             transaction.commit();
         } catch (RuntimeException e) {
             transaction.rollback();
+            LOGGER.log(Level.ERROR, e);
             throw new TransactionException(e);
         }
     }
@@ -78,6 +83,7 @@ public class HibernateRoleDao implements RoleDao {
             transaction.commit();
         } catch (RuntimeException e) {
             transaction.rollback();
+            LOGGER.log(Level.ERROR, e);
             throw new TransactionException(e);
         }
     }

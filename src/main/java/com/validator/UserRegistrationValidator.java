@@ -1,71 +1,58 @@
 package com.validator;
 
 import com.model.RegistrationUserDto;
+import com.service.CaptchaService;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service("userRegistrationValidator")
 public class UserRegistrationValidator implements Validator {
     @Autowired
     private UserService userService;
+    @Autowired
+    private Properties properties;
+    @Autowired
+    private CaptchaService captchaService;
 
     @Override
     public Map<String, String> validate(Object object) {
         Map<String, String> errors = new HashMap<>();
         RegistrationUserDto user = (RegistrationUserDto) object;
-        //HttpSession session = Objects.requireNonNull(getRequest()).getSession();
         if (user.getLogin().length() < 3) {
-            errors.put("login", "massages");
+            errors.put("login", properties.getProperty("login.massages.is.short"));
         }
         if (Objects.nonNull(userService.findByLogin(user.getLogin()))) {
-            errors.put("login", "massages.isUsed");
+            errors.put("login", properties.getProperty("login.massages.isUsed"));
         }
         if (user.getPassword().length() < 3) {
-            errors.put("password", "massages");
+            errors.put("password", properties.getProperty("password.massages"));
         }
         if (!user.getPassword().equals(user.getConfirmPassword())) {
-            errors.put("confirmPassword", "massages");
+            errors.put("confirmPassword", properties.getProperty("confirmPassword.massages"));
         }
         if (!user.getEmail().matches("^(.+)@(.+)$")) {
-            errors.put("email", "massages");
+            errors.put("email", properties.getProperty("email.massages"));
         }
         if (Objects.nonNull(userService.findByEmail(user.getEmail()))) {
-            errors.put("email", "massages.isUsed");
+            errors.put("email", properties.getProperty("email.massages.isUsed"));
         }
         if (user.getFirstName().trim().length() < 3
                 || user.getFirstName().matches(".*\\d.*")) {
-            errors.put("firstName", "massages");
+            errors.put("firstName", properties.getProperty("firstName.massages"));
         }
         if (user.getFirstName().trim().length() < 3
                 || user.getLastName().matches(".*\\d.*")) {
-            errors.put("lastName", "massages");
+            errors.put("lastName", properties.getProperty("lastName.massages"));
         }
         if (Objects.isNull(user.getBirthday()) || user.getBirthday().after(new Date())) {
-            errors.put("birthday", "massages");
+            errors.put("birthday", properties.getProperty("birthday.massages"));
         }
-//        if (!session.getAttribute("captcha").equals(user.getCaptcha())) {
-//            errors.put("captcha", "massages");
-//        }
+        if (captchaService.validCaptcha(user.getCaptchaId(), user.getCaptcha())) {
+            errors.put("captcha", properties.getProperty("captcha.massages"));
+        }
         return errors;
-    }
-
-    private HttpServletRequest getRequest() {
-        RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
-        if (attribs instanceof NativeWebRequest) {
-            return (HttpServletRequest) ((NativeWebRequest) attribs).getNativeRequest();
-        }
-        return null;
     }
 }

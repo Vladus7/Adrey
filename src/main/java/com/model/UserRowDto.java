@@ -1,9 +1,11 @@
 package com.model;
 
 import javax.ws.rs.core.GenericType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
+@XmlRootElement(name = "userRowDto")
 public class UserRowDto {
     private Long id;
     private String login;

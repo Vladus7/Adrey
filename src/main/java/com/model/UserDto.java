@@ -6,9 +6,11 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.Objects;
 
+@XmlRootElement(name = "userDto")
 public class UserDto {
     private Long id;
     private String login;
@@ -16,7 +18,6 @@ public class UserDto {
     private String email;
     private String firstName;
     private String lastName;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     private Date birthday;
     private String role;
 

@@ -15,6 +15,7 @@ public class RegistrationUserDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String captcha;
+    private String captchaId;
 
     public RegistrationUserDto() {
     }
@@ -92,6 +93,14 @@ public class RegistrationUserDto {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public String getCaptchaId() {
+        return captchaId;
+    }
+
+    public void setCaptchaId(String captchaId) {
+        this.captchaId = captchaId;
     }
 
     public void cleanPasswordsAndCaptcha() {

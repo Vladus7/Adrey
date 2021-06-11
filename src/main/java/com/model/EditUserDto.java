@@ -17,6 +17,7 @@ public class EditUserDto {
     private Date birthday;
     private String captcha;
     private String role;
+    private String captchaId;
 
     public EditUserDto() {
     }
@@ -123,6 +124,14 @@ public class EditUserDto {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getCaptchaId() {
+        return captchaId;
+    }
+
+    public void setCaptchaId(String captchaId) {
+        this.captchaId = captchaId;
     }
 
     public User toUser(RoleService roleService) {
