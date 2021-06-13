@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.model.EditUserDto;
 import com.model.UserDto;
+import com.model.UserRowDto;
 import com.service.ConvertorUsersToUserRowBeans;
 import com.service.RoleService;
 import com.service.UserService;
@@ -59,12 +60,16 @@ public class UserResources {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUser(EditUserDto userDto) {
-        Map<String,String> errors = userAddValidator.validate(userDto);
+        Map<String, String> errors = userAddValidator.validate(userDto);
         if (!errors.isEmpty()) {
             return Response.status(Response.Status.CONFLICT).entity(errors).build();
         }
         userService.create(userDto.toUser(roleService));
-        return Response.ok().build();
+        User user = userService.findByLogin(userDto.getLogin());
+        System.out.println(user);
+        return Response.ok(new UserRowDto(user.getId(), user.getLogin(),
+                user.getFirstName(), user.getLastName(),
+                convertorUsersToUserRowBeans.getAge(user.getBirthday()), user.getRole())).build();
     }
 
     // http://localhost:8080/users/update
@@ -73,24 +78,31 @@ public class UserResources {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(EditUserDto userDto) {
-        Map<String,String> errors = userEditValidator.validate(userDto);
+        Map<String, String> errors = userEditValidator.validate(userDto);
         if (!errors.isEmpty()) {
             return Response.status(Response.Status.CONFLICT).entity(errors).build();
         }
         userService.update(userDto.toUser(roleService));
-        return Response.ok().build();
+        User user = userService.findById(userDto.getId());
+        return Response.ok(new UserRowDto(user.getId(), user.getLogin(),
+                user.getFirstName(), user.getLastName(),
+                convertorUsersToUserRowBeans.getAge(user.getBirthday()), user.getRole())).build();
     }
 
     // http://localhost:8080/users/1
     @DELETE
     @Path("/{id}")
-    public Response deleteUser(@PathParam("id") long id) throws Exception {
+    public Response deleteUser(@PathParam("id") long id) {
         User user = userService.findById(id);
         if (Objects.isNull(user)) {
             return Response.status(Response.Status.CONFLICT)
                     .build();
         }
-        userService.remove(user);
+        try {
+            userService.remove(user);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         return Response.ok().build();
     }
 }

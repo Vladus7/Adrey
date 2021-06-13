@@ -25,7 +25,7 @@ public class ConvertorUsersToUserRowBeans {
         return users;
     }
 
-    private int getAge(Date birthday) {
+    public int getAge(Date birthday) {
         return Period.between(new Date(birthday.getTime()).toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate(), LocalDate.now()).getYears();

@@ -43,23 +43,83 @@ public class InterResources {
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.TEXT_PLAIN)
     public Response login(LoginUserDto userDto) throws URISyntaxException {
         Map<String, String> errors = loginValidator.validate(userDto);
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errors).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errors.toString()).build();
         }
-        return Response.ok().header("Authorization", jwtProvider.generateToken(userDto.getLogin())).build();
+        User user = userService.findByLogin(userDto.getLogin());
+        return Response.ok().header("token", jwtProvider.generateToken(userDto.getLogin()))
+                .entity(new Token(jwtProvider.generateToken(userDto.getLogin()),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getRole().getName())).build();
     }
 
     @POST
     @Path("registration")
+//    @Consumes(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registration(RegistrationUserDto registrationUserDto, @Context HttpServletRequest request) {
         Map<String, String> errors = userRegistrationValidator.validate(registrationUserDto);
         if (!errors.isEmpty()) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errors).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errors.toString()).build();
         }
         userService.create(registrationUserDto.toUser(roleService));
-        return Response.ok().header("Authorization", jwtProvider.generateToken(registrationUserDto.getLogin())).build();
+        return Response.ok().header("token", jwtProvider.generateToken(registrationUserDto.getLogin()))
+                .entity(new Token(jwtProvider.generateToken(registrationUserDto.getLogin()),
+                        registrationUserDto.getFirstName(),
+                        registrationUserDto.getLastName(),
+                        "User")).build();
+    }
+
+    private class Token {
+    private String token;
+    private String firstName;
+    private String lastName;
+    private String role;
+
+        public Token() {
+        }
+
+        public Token(String token, String firstName, String lastName, String role) {
+            this.token = token;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.role = role;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
     }
 }

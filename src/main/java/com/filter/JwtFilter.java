@@ -19,7 +19,7 @@ import static org.springframework.util.StringUtils.hasText;
 
 //@Component("jwtFilter")
 public class JwtFilter extends GenericFilterBean {
-    public static final String AUTHORIZATION = "Authorization";
+    public static final String AUTHORIZATION = "token";
 
     @Autowired
     private JwtProvider jwtProvider;

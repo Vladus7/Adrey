@@ -46,7 +46,9 @@ public class UserEditValidator implements Validator {
         if (checkUserRole(user.getRole())) {
             errors.put("role", properties.getProperty("role.massages"));
         }
-        if (captchaService.validCaptcha(user.getCaptchaId(), user.getCaptcha())) {
+        System.out.println(user.getCaptcha());
+        System.out.println(user.getCaptchaId());
+        if (!captchaService.validCaptcha(user.getCaptchaId(), user.getCaptcha())) {
             errors.put("captcha", properties.getProperty("captcha.massages"));
         }
         return errors;
