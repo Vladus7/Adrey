@@ -35,12 +35,20 @@ public class UserResources {
     @Autowired
     private UserEditValidator userEditValidator;
 
-    // http://localhost:8080/users/
+//    // http://localhost:8080/users/
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response getAllUsers() {
+//        return Response.ok()
+//                .entity(convertorUsersToUserRowBeans.convert(userService.findAll()))
+//                .build();
+//    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() {
         return Response.ok()
-                .entity(convertorUsersToUserRowBeans.convert(userService.findAll()))
+                .entity(convertorUsersToUserRowBeans.convertUsersToUserInfoDto(userService.findAll()))
                 .build();
     }
 

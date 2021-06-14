@@ -33,6 +33,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return User.builder()
                 .username(user.getLogin())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .roles(roleDao.findById(user.getId()).getName().toUpperCase(Locale.ROOT)).build();
+                .roles(roleDao.findById(user.getId()).getName()).build();
     }
 }

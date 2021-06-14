@@ -43,7 +43,6 @@ public class InterResources {
     @Path("login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.TEXT_PLAIN)
     public Response login(LoginUserDto userDto) throws URISyntaxException {
         Map<String, String> errors = loginValidator.validate(userDto);
         if (!errors.isEmpty()) {
@@ -59,7 +58,6 @@ public class InterResources {
 
     @POST
     @Path("registration")
-//    @Consumes(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response registration(RegistrationUserDto registrationUserDto, @Context HttpServletRequest request) {
         Map<String, String> errors = userRegistrationValidator.validate(registrationUserDto);

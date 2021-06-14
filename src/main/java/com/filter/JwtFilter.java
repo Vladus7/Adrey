@@ -12,12 +12,11 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import static org.springframework.util.StringUtils.hasText;
 
-//@Component("jwtFilter")
 public class JwtFilter extends GenericFilterBean {
     public static final String AUTHORIZATION = "token";
 
@@ -29,6 +28,10 @@ public class JwtFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+//       HttpServletRequest request = (HttpServletRequest) servletRequest;
+//        for (Cookie cookie: request.getCookies()) {
+//            System.out.println(cookie.getName()+": "+cookie.getValue());
+//        }
         logger.info("do filter...");
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {

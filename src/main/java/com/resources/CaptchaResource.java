@@ -32,30 +32,16 @@ public class CaptchaResource {
     private static final Logger LOGGER = Logger.getLogger(CaptchaResource.class);
     @Autowired
     private CaptchaService captchaService;
-//    @Autowired
-//    private UserService userService;
-//    @Autowired
-//    private RoleService roleService;
 
     @GET
     @Path("/{id}")
     @CrossOrigin(origins = "*")
     @Produces({"image/png"})
     public Response getCaptcha(@PathParam("id") String id) {
-       // initdb();
         return Response.ok()
                 .entity((StreamingOutput) output -> {
             captchaService.write(id, output);
             output.flush();
         }).build();
     }
-
-//    void initdb() {
-//        if (userService.findAll().size() == 0) {
-//            roleService.create(new Role(1L, "Admin"));
-//            roleService.create(new Role(2L, "User"));
-//            userService.create(new User(1L, "admin", "admin", "admin@ad.com", "admin", "admin", new Date(), new Role(1L, "Admin")));
-//            userService.create(new User(2L, "user", "user", "user@ads.com", "user", "user", new Date(), new Role(2L, "User")));
-//        }
-//    }
 }

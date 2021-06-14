@@ -74,26 +74,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("rest/captcha/*", "/rest/inter/*").permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers("rest/users/*").authenticated()//.hasRole("ADMIN")
+                .antMatchers("rest/users/*").authenticated()
                 .antMatchers("rest/users").hasRole("USER")
-                //.anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-//                .anyRequest().permitAll()
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                //.antMatchers("rest/register", "rest/login", "rest/logout", "rest/captcha/*")
-                ;
-
-//                .and()
-//                .headers().frameOptions().sameOrigin()
-//                .and()
-//                .addFilterAfter(restTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeRequests()
-//                .antMatchers("/rest/*").authenticated()
-//                .and()
-//                .csrf()
-//                .disable();
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/rest/captcha/*", "/rest/inter/*").permitAll()
+//                .antMatchers("/rest/users").hasAuthority("Admin")
+//                .antMatchers("/rest/users/*").hasAuthority("Admin")
+//                .anyRequest().authenticated().and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//    }
 }
